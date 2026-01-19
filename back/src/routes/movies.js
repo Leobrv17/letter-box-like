@@ -15,10 +15,12 @@ router.get('/search', async (req, res, next) => {
   try {
     const query = req.query.q;
     const page = Number(req.query.page || 1);
+    const year = req.query.year;
+    const type = req.query.type;
     if (!query) {
       return res.status(400).json({ message: 'Query parameter q required' });
     }
-    const data = await getProvider().searchMovies(query, page);
+    const data = await getProvider().searchMovies(query, page, { year, type });
     return res.json(data);
   } catch (error) {
     return next(error);
