@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import StarRating from './StarRating.jsx';
 
 const ReviewCard = ({ review }) => {
   return (
@@ -7,7 +8,7 @@ const ReviewCard = ({ review }) => {
       <h3>
         <Link to={`/review/${review._id}`}>{review.titleSnapshot}</Link>
       </h3>
-      <p>Rating: {review.rating ?? 'N/A'}</p>
+      <StarRating rating={review.rating} max={10} label="Review" />
       <p>{review.text}</p>
       {review.userId?.username && (
         <p>

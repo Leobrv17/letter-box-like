@@ -41,8 +41,11 @@ export const api = {
     const { data } = await apiClient.client.delete(`/reviews/${id}`);
     return data;
   },
-  async searchMovies(query, page = 1) {
-    const { data } = await apiClient.client.get('/movies/search', { params: { q: query, page } });
+  async searchMovies(query, page = 1, options = {}) {
+    const { year, type } = options;
+    const { data } = await apiClient.client.get('/movies/search', {
+      params: { q: query, page, year: year || undefined, type: type || undefined }
+    });
     return data;
   },
   async fetchMovie(imdbId) {
@@ -63,6 +66,18 @@ export const api = {
   },
   async removeFavorite(imdbId) {
     const { data } = await apiClient.client.delete(`/favorites/${imdbId}`);
+    return data;
+  },
+  async fetchWatchlist() {
+    const { data } = await apiClient.client.get('/watchlist');
+    return data;
+  },
+  async addToWatchlist(imdbId) {
+    const { data } = await apiClient.client.post(`/watchlist/${imdbId}`);
+    return data;
+  },
+  async removeFromWatchlist(imdbId) {
+    const { data } = await apiClient.client.delete(`/watchlist/${imdbId}`);
     return data;
   }
 };

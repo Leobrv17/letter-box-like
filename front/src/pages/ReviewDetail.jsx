@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api/index.js';
+import StarRating from '../components/StarRating.jsx';
 
 const ReviewDetail = () => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const ReviewDetail = () => {
   return (
     <section>
       <h1>{review.titleSnapshot}</h1>
-      <p>Rating: {review.rating ?? 'N/A'}</p>
+      <StarRating rating={review.rating} max={10} label="Review" />
       <p>{review.text}</p>
       <p>
         Movie: <Link to={`/movie/${review.imdbId}`}>{review.imdbId}</Link>

@@ -45,6 +45,12 @@ button.secondary {
   background: #374151;
 }
 
+.button-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 input,
 textarea,
 select {
@@ -69,9 +75,66 @@ form {
   margin-bottom: 16px;
 }
 
+.panel {
+  background: rgba(31, 41, 55, 0.5);
+  border: 1px solid #374151;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
 .grid {
   display: grid;
   gap: 16px;
+}
+
+.muted {
+  color: #9ca3af;
+}
+
+.movie-card__body {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.movie-card__poster {
+  width: 80px;
+  height: 120px;
+  border-radius: 8px;
+  background: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 12px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.movie-card__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.rating__stars {
+  color: #fbbf24;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.rating__label {
+  color: #d1d5db;
+  font-size: 14px;
 }
 
 @media (min-width: 720px) {
