@@ -9,6 +9,7 @@ import reviewRoutes from './routes/reviews.js';
 import movieRoutes from './routes/movies.js';
 import userRoutes from './routes/users.js';
 import favoriteRoutes from './routes/favorites.js';
+import watchlistRoutes from './routes/watchlist.js';
 
 import { notFoundHandler, errorHandler } from './middleware/errors.js';
 
@@ -29,6 +30,7 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/movies', movieRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/favorites', favoriteRoutes);
+app.use('/api/watchlist', watchlistRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

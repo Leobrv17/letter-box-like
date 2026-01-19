@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../api/index.js';
+import MovieCard from '../components/MovieCard.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const emptyForm = {
@@ -14,17 +15,42 @@ const Me = () => {
   const { user } = useAuth();
   const [reviews, setReviews] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [watchlist, setWatchlist] = useState([]);
+  const [likedMovies, setLikedMovies] = useState([]);
+  const [watchlistMovies, setWatchlistMovies] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
   const [status, setStatus] = useState('loading');
 
+  const loadMovieDetails = async (items) => {
+    const movies = await Promise.all(
+      items.map(async (entry) => {
+        try {
+          const movie = await api.fetchMovie(entry.imdbId);
+          return { ...movie, imdbId: entry.imdbId };
+        } catch (error) {
+          return null;
+        }
+      })
+    );
+    return movies.filter(Boolean);
+  };
+
   const loadData = async () => {
-    const [reviewData, favoriteData] = await Promise.all([
+    const [reviewData, favoriteData, watchlistData] = await Promise.all([
       api.fetchMyReviews(),
-      api.fetchFavorites()
+      api.fetchFavorites(),
+      api.fetchWatchlist()
     ]);
     setReviews(reviewData.reviews || []);
     setFavorites(favoriteData.favorites || []);
+    setWatchlist(watchlistData.watchlist || []);
+    const [favoriteMovies, watchlistMovies] = await Promise.all([
+      loadMovieDetails(favoriteData.favorites || []),
+      loadMovieDetails(watchlistData.watchlist || [])
+    ]);
+    setLikedMovies(favoriteMovies);
+    setWatchlistMovies(watchlistMovies);
   };
 
   useEffect(() => {
@@ -148,12 +174,23 @@ const Me = () => {
             </div>
           ))}
           <h2>Your favorites</h2>
-          {favorites.length === 0 && <p>No favorites yet.</p>}
-          {favorites.map((favorite) => (
-            <div key={favorite._id} className="card">
-              <p>IMDb ID: {favorite.imdbId}</p>
+          {favorites.length === 0 && <p>No liked movies yet.</p>}
+          {favorites.length > 0 && (
+            <div className="grid two">
+              {likedMovies.map((movie) => (
+                <MovieCard key={movie.imdbID || movie.imdbId} movie={movie} linkLabel="Open" />
+              ))}
             </div>
-          ))}
+          )}
+          <h2>Your watchlist</h2>
+          {watchlist.length === 0 && <p>No watchlist items yet.</p>}
+          {watchlist.length > 0 && (
+            <div className="grid two">
+              {watchlistMovies.map((movie) => (
+                <MovieCard key={movie.imdbID || movie.imdbId} movie={movie} linkLabel="Open" />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

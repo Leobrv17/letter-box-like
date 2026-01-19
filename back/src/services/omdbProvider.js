@@ -19,8 +19,16 @@ const createLiveProvider = () => {
   };
 
   return {
-    async searchMovies(query, page = 1) {
-      const response = await fetch(buildUrl({ s: query, page: String(page) }));
+    async searchMovies(query, page = 1, options = {}) {
+      const { year, type } = options;
+      const response = await fetch(
+        buildUrl({
+          s: query,
+          page: String(page),
+          y: year || undefined,
+          type: type || undefined
+        })
+      );
       const data = await response.json();
       if (data.Response === 'False') {
         return { results: [], totalResults: 0, error: data.Error };
@@ -39,11 +47,12 @@ const createLiveProvider = () => {
 };
 
 const createMockProvider = () => ({
-  async searchMovies(query, page = 1) {
+  async searchMovies(query, page = 1, options = {}) {
+    const { year, type } = options;
     return {
       results: [
         {
-          Title: `Mock Movie for ${query}`,
+          Title: `Mock ${type || 'Movie'} for ${query}`,
           Year: '2024',
           imdbID: 'tt0000001',
           Type: 'movie',
@@ -51,7 +60,8 @@ const createMockProvider = () => ({
         }
       ],
       totalResults: 1,
-      page
+      page,
+      filters: { year: year || null, type: type || null }
     };
   },
   async getMovie(imdbId) {
