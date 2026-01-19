@@ -38,6 +38,14 @@ cp .env.example .env
 
 ## Lancement en local
 
+### Base de données MongoDB (Docker)
+
+```bash
+docker compose up -d
+```
+
+MongoDB est exposé sur `mongodb://localhost:27017/letterbox`.
+
 ### Backend (port 4000)
 
 ```bash
