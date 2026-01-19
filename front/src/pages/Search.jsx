@@ -17,6 +17,7 @@ const Search = () => {
     setErrorMessage('');
     try {
       const data = await api.searchMovies(query, requestedPage, options);
+
       if (data.error) {
         setResults([]);
         setTotalResults(0);
@@ -24,6 +25,7 @@ const Search = () => {
         setErrorMessage(data.error);
         return;
       }
+
       const incoming = data.results || [];
       setResults((prev) => (replace ? incoming : [...prev, ...incoming]));
       setTotalResults(data.totalResults || 0);
